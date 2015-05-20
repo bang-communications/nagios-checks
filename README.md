@@ -58,3 +58,13 @@ CRITICAL_VERSION="7.0"
 HTDOCS=/var/www/"$SITE"/htdocs
 ```
 
+
+## check_permissions
+
+Make sure there are no files anyway that are world writable
+Saves the complete list into `/tmp/nagios-world-writable.log`.
+
+```bash
+/path/to/check_permissions
+```
+

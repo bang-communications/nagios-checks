@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# check_permission
+# Make sure there are no files anyway that are world writable
+# Saves the complete list into /tmp/nagios-world-writable.log
+
+WORLD_WRITABLE="$(/usr/bin/find / -xdev \( -type d -o -type f \) -perm /o=w 2>/dev/null | grep -v '/tmp')"
+OK="$?"
+if [ ! -z "$WORLD_WRITABLE" ]; then
+  NUM="$(echo "$WORLD_WRITABLE" | wc -l)"
+  echo "$WORLD_WRITABLE" > /tmp/nagios-world-writable.log
+  echo "$NUM world writable files found"
+  echo "$WORLD_WRITABLE" | head
+  exit 1
+fi
+
+if [ "$OK" == "0" ]; then
+  echo "OK"
+  exit 0
+else
+  echo "Timeout"
+  exit 3
+fi
