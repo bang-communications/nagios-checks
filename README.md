@@ -68,3 +68,12 @@ Saves the complete list into `/tmp/nagios-world-writable.log`.
 /path/to/check_permissions
 ```
 
+
+## check_ownership
+
+Makes sure there are no files anyway without a valid owner or group.
+Saves the complete list into `/tmp/nagios-unowned.log`.
+
+```bash
+/path/to/check_ownership
+```

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# check_ownership
+# Makes sure there are no files anyway without a valid owner/group
+# Saves the complete list into /tmp/nagios-unowned.log
+
+UNOWNED="$(/usr/bin/find / -xdev \( -type d -o -type f \) \( -nouser -o -nogroup \) 2>/dev/null | grep -v '/tmp')"
+OK="$?"
+if [ ! -z "$UNOWNED" ]; then
+  NUM="$(echo "$UNOWNED" | wc -l)"
+  echo "$UNOWNED" > /tmp/nagios-unowned.log
+  echo "$NUM unowned files found"
+  echo "$UNOWNED" | head
+  exit 1
+fi
+
+if [ "$OK" == "0" ]; then
+  echo "OK"
+  exit 0
+else
+  echo "Timeout"
+  exit 3
+fi
+
